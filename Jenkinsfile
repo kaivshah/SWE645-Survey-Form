@@ -61,9 +61,10 @@
 // }
 pipeline {
     agent any
+
     environment {
         DOCKER_IMAGE = "kaivshah18/surveyform"
-        BUILD_TIMESTAMP = new Date().format("yyyyMMdd-HHmmss", TimeZone.getTimeZone('UTC')).replace(":", "-")
+        TIMESTAMP = new Date().format("yyyyMMdd-HHmmss", TimeZone.getTimeZone('UTC'))
         KUBECONFIG = "/var/lib/jenkins/.kube/config"
         RANCHER_NAMESPACE = "default"
         RANCHER_DEPLOYMENT = "hw2-cluster-deployment"
@@ -78,16 +79,14 @@ pipeline {
             }
         }
         
-        stage("Building Student Survey Application Image") {
+        stage("Building Docker Image") {
             steps {
                 script {
                     sh 'echo "Building Docker image..."'
-                   
-                    sh "docker login -u kaivshah18 -p Pmnskskymd@18"
+                    sh "docker login -u kaivshah18 -p 'Pmnskskymd@18'"
                     
-
-                    // Build Docker image with a valid tag
-                    sh "docker build -t ${DOCKER_IMAGE}:${BUILD_TIMESTAMP} --build-arg BUILD_ID=${BUILD_TIMESTAMP} ."
+                    // Build Docker images with timestamped and latest tags
+                    sh "docker build -t ${DOCKER_IMAGE}:${TIMESTAMP} -t ${DOCKER_IMAGE}:01 ."
                 }
             }
         }
@@ -95,7 +94,9 @@ pipeline {
         stage("Pushing Image to DockerHub") {
             steps {
                 script {
-                    sh "docker push ${DOCKER_IMAGE}:${BUILD_TIMESTAMP}"
+                    // Push both the timestamped and latest tag
+                    sh "docker push ${DOCKER_IMAGE}:${TIMESTAMP}"
+                    sh "docker push ${DOCKER_IMAGE}:01"
                 }
             }
         }
@@ -103,7 +104,8 @@ pipeline {
         stage("Deploying to Rancher") {
             steps {
                 script {
-                    sh "kubectl set image deployment/${RANCHER_DEPLOYMENT} container-0=${DOCKER_IMAGE}:${BUILD_TIMESTAMP} -n ${RANCHER_NAMESPACE}"
+                    // Update deployment to use the timestamped image
+                    sh "kubectl set image deployment/${RANCHER_DEPLOYMENT} container-0=${DOCKER_IMAGE}:${TIMESTAMP} --namespace=${RANCHER_NAMESPACE}"
                     sh "kubectl rollout restart deployment/${RANCHER_DEPLOYMENT} -n ${RANCHER_NAMESPACE}"
                 }
             }
