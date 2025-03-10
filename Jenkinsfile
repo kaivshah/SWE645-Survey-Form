@@ -83,8 +83,8 @@ pipeline {
                 script {
                     sh 'echo "Building Docker image..."'
                     
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh "docker login -u $DOCKER_USER -p $DOCKER_PASS"
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials')]) {
+                        sh "docker login -u kaivshah18 -p Pmnskskymd@18"
                     }
 
                     // Build Docker image with a valid tag
