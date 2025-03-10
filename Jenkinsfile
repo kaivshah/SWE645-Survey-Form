@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_IMAGE = "kaivshah18/surveyform:01"
+        DOCKER_IMAGE = "kaivshah18/surveyform"
         BUILD_TIMESTAMP = new Date().format("yyyyMMdd-HHmmss", TimeZone.getTimeZone('UTC'))
         KUBECONFIG = "/var/lib/jenkins/.kube/config"
         RANCHER_NAMESPACE = "default"
@@ -24,7 +24,7 @@ pipeline {
                     sh "docker login -u kaivshah18 -p Pmnskskymd@18"
 
                     // Build Docker image with a timestamped tag
-                    def customImage = docker.build("${DOCKER_IMAGE}:${BUILD_TIMESTAMP}", "--build-arg BUILD_ID=${BUILD_TIMESTAMP} .")
+                    def customImage = docker.build("${DOCKER_IMAGE}:01:${BUILD_TIMESTAMP}", "--build-arg BUILD_ID=${BUILD_TIMESTAMP} .")
                 }
             }
         }
