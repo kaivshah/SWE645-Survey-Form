@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_IMAGE = "kaivshah18/surveyform"
+        DOCKER_IMAGE = "kaivshah18/surveyform:01"
         BUILD_TIMESTAMP = new Date().format("yyyyMMdd-HHmmss", TimeZone.getTimeZone('UTC'))
         KUBECONFIG = "/var/lib/jenkins/.kube/config"
         RANCHER_NAMESPACE = "default"
