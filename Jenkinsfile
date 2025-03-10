@@ -82,10 +82,9 @@ pipeline {
             steps {
                 script {
                     sh 'echo "Building Docker image..."'
+                   
+                    sh "docker login -u kaivshah18 -p Pmnskskymd@18"
                     
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials')]) {
-                        sh "docker login -u kaivshah18 -p Pmnskskymd@18"
-                    }
 
                     // Build Docker image with a valid tag
                     sh "docker build -t ${DOCKER_IMAGE}:${BUILD_TIMESTAMP} --build-arg BUILD_ID=${BUILD_TIMESTAMP} ."
