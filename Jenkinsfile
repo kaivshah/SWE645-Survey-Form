@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script {
                     sh 'echo "Building Docker image..."'
-                    sh "docker login -u kaivshah18 -p Pmnskskymd@18"
+                    sh "docker login -u kaivshah18 -p Pmnsmd@18"
 
                     // Build Docker image with a timestamped tag
                     def customImage = docker.build("${DOCKER_IMAGE}:${BUILD_TIMESTAMP}", "--build-arg BUILD_ID=${BUILD_TIMESTAMP} .")
