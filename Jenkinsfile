@@ -83,7 +83,7 @@ pipeline {
 //             steps {
 //                 script {
 //                     sh 'echo "Building Docker image..."'
-//                     sh "docker login -u kaivshah18 -p 'Pmnskskymd@18'"
+//                    
                     
 //                     // Build Docker images with timestamped and latest tags
 //                     sh "docker build -t ${DOCKER_IMAGE}:${TIMESTAMP} -t ${DOCKER_IMAGE}:01 ."
